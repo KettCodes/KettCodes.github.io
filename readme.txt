@@ -6,4 +6,5 @@ website located at: https://kettcodes.github.io/
 list used in https://kettcodes.github.io/index.html and nav bar in each site
 table used in https://kettcodes.github.io/fictionSand.html
 
-tested in chrome and firefox
+tested on pc chrome and firefox
+tested on android with chrome

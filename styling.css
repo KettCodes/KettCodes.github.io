@@ -13,15 +13,6 @@ body{
     background-color: rgb(50, 50, 50);
 }
 
-header{
-    background-image: linear-gradient( rgba(244, 164, 96, 0.95), rgba(244, 164, 96, 0.05));
-    color: rgb(250, 245, 240);
-    /*font-family: 'Denk One', sans-serif;*/
-    font-size: 48px;
-    text-align: center;
-    width: 100%;
-}
-
 nav{
     height: 40px;
     font-size: 24px;
@@ -84,9 +75,9 @@ li a:hover, .dropHover:hover a{
     margin: auto;
     font-size: 24px;
     color: rgb(20,20,20);
-    border-radius: 50px 10px;
+    /*border-radius: 50px 10px;*/
     background-color: rgb(245, 245, 245);
-    padding: 12px;
+    padding: 8px;
 }
 
 footer{
@@ -102,6 +93,15 @@ footer a{
 }
 
 /*Sand Formatting*/
+.sandHeader{
+    background-image: linear-gradient( rgba(244, 164, 96, 0.95), rgba(244, 164, 96, 0.05));
+    color: rgb(250, 245, 240);
+    font-family: 'Denk One', sans-serif;
+    font-size: 48px;
+    text-align: center;
+    width: 100%;
+}
+
 
 .sandDream{
     font-family: 'Dancing Script', cursive;
