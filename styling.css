@@ -74,7 +74,7 @@ li a:hover, .dropHover:hover a{
 
 .story{
     width: 80%;
-    align-self: center;
+    margin: auto;
     color: rgb(200, 200, 200);
     font-size: 32px;
 }
@@ -87,6 +87,7 @@ li a:hover, .dropHover:hover a{
 }
 
 .sandText{
+    font-size: 28px;
     font-family: 'Playfair Display', serif;
     color: rgb(200, 200, 200);
 }
