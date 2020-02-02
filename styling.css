@@ -83,6 +83,7 @@ li a:hover, .dropHover:hover a{
 footer{
     width: 100%;
     padding-top: 10px;
+    padding-bottom: 10px;
     background-color: rgba(20,20,20,.50);
     text-align: center;
 }
@@ -91,6 +92,11 @@ footer a{
     text-decoration: none;
     font-size: 18px;
     color: rgb(245, 245, 245);
+}
+
+table{
+    width: 100%;
+    table-layout: fixed;
 }
 
 /*Sand Formatting*/
@@ -125,11 +131,6 @@ footer a{
     border-radius: 20px;
     background-size: cover;
     background-position: center;
-}
-
-table{
-    width: 100%;
-    table-layout: fixed;
 }
 
 .sand1 {
@@ -230,5 +231,131 @@ table{
     100% {
         background-color: rgb(200, 120, 52);
         top: 30px;
+    }
+}
+
+/*Mysterium Formatting*/
+
+.mystHeader{
+    background-image: linear-gradient( rgba(0, 51, 102, 0.99), rgba(160, 215, 250, 0.99));
+    color: rgb(250, 245, 240);
+    font-family: 'Denk One', sans-serif;
+    font-size: 48px;
+    text-align: center;
+    width: 100%;
+}
+
+.mystText{
+    font-family: 'Playfair Display', serif;
+    color: rgb(245, 245, 245);
+}
+
+.myst1 {
+    width: 3px;
+    height: 3px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 8s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-timing-function: linear;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+}
+
+.myst2 {
+    width: 3px;
+    height: 3px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 10s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-delay: 1s;
+    animation-timing-function: linear;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+.myst3 {
+    width: 3px;
+    height: 3px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 8.5s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-delay: 2s;
+    animation-timing-function: linear;
+    animation-duration: 8.5s;
+    animation-iteration-count: infinite;
+}
+
+.myst4 {
+    width: 3px;
+    height: 3px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-delay: 3s;
+    animation-timing-function: linear;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+}
+
+.myst5 {
+    width: 3px;
+    height: 4px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 8.25s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-delay: 4.5s;
+    animation-timing-function: linear;
+    animation-duration: 8.25s;
+    animation-iteration-count: infinite;
+}
+
+.myst6 {
+    width: 4px;
+    height: 3px;
+    left: 0px;
+    background-color: rgba(160, 215, 250, 0.01);
+    position: relative;
+    -webkit-animation-name: mystTitle;
+    -webkit-animation-duration: 9.5s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: mystTitle;
+    animation-delay: 5s;
+    animation-timing-function: linear;
+    animation-duration: 9.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes mystTitle {
+    0%{
+        background-color: rgba(160, 215, 250, 0.01);
+    }
+    2% {
+        background-color: rgba(160, 215, 250, 0.99);
+    }
+    20% {
+        background-color: rgba(0, 51, 102, 0.01);
+    }
+    100% {
+        background-color: rgba(0, 51, 102, 0.01);
     }
 }
