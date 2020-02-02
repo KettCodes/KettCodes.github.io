@@ -82,7 +82,7 @@ li a:hover, .dropHover:hover a{
 
 footer{
     width: 100%;
-    padding: 10px;
+    padding-top: 10px;
     background-color: rgba(20,20,20,.50);
 }
 
@@ -104,14 +104,17 @@ footer a{
 
 
 .sandDream{
-    font-family: 'Dancing Script', cursive;
-    color: rgb(200, 200, 200);
+    /*font-family: 'Dancing Script', cursive;*/
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    color: rgb(250, 210, 176);
+    width: 90%;
 }
 
 .sandText{
-    font-size: 28px;
+    /*font-size: 28px;*/
     font-family: 'Playfair Display', serif;
-    color: rgb(200, 200, 200);
+    color: rgb(245, 245, 245);
 }
 
 .stolenComic{
