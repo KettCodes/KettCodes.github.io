@@ -15,7 +15,7 @@ body{
 header{
     background-image: linear-gradient( rgba(244, 164, 96, 0.95), rgba(244, 164, 96, 0.05));
     color: rgb(250, 245, 240);
-    font-family: 'Denk One', sans-serif;
+    /*font-family: 'Denk One', sans-serif;*/
     font-size: 48px;
     text-align: center;
     width: 100%;
