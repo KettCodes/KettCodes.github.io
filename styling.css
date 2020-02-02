@@ -54,6 +54,8 @@ li a:hover, .dropHover:hover a{
 
 .dropNav{
     display: none;
+    position: relative;
+    z-index: 1000;
 }
 
 .dropHover:hover .dropNav{
@@ -74,7 +76,7 @@ li a:hover, .dropHover:hover a{
 
 .stolenComic{
     background-image: url("http://www.dreadcentral.com/wp-content/uploads/2017/09/thesandman-syfy.jpg");
-    width:  50%;
+    width:  100%;
     padding-top: 40%;
     background-size: cover;
     background-position: center;
