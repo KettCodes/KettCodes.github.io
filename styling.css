@@ -75,13 +75,13 @@ li a:hover, .dropHover:hover a{
     margin: auto;
     font-size: 24px;
     color: rgb(20,20,20);
-    /*border-radius: 50px 10px;*/
+    border-radius: 40px 10px;
     background-color: rgb(245, 245, 245);
     padding: 8px;
 }
 
 footer{
-    width 100%;
+    width: 100%;
     padding: 10px;
     background-color: rgba(20,20,20,.50);
 }
@@ -118,6 +118,7 @@ footer a{
     background-image: url("http://www.dreadcentral.com/wp-content/uploads/2017/09/thesandman-syfy.jpg");
     width:  100%;
     padding-top: 40%;
+    border-radius: 20px;
     background-size: cover;
     background-position: center;
 }
