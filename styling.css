@@ -79,6 +79,28 @@ li a:hover, .dropHover:hover a{
     font-size: 32px;
 }
 
+.reflection{
+    width: 90%;
+    margin: auto;
+    font-size: 24px;
+    color: rgb(20,20,20);
+    border-radius: 50px 10px;
+    background-color: rgb(245, 245, 245);
+    padding: 12px;
+}
+
+footer{
+    width 100%;
+    padding: 10px;
+    background-color: rgba(20,20,20,.50);
+}
+
+footer a{
+    text-decoration: none;
+    font-size: 24px;
+    color: rgb(245, 245, 245);
+}
+
 /*Sand Formatting*/
 
 .sandDream{
