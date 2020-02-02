@@ -15,7 +15,7 @@ body{
 
 nav{
     height: 40px;
-    font-size: 24px;
+    font-size: 16px;
     font-family: 'Righteous', cursive;
     background-color: rgba(20,20,20,.50);
     padding-bottom: 12px;
@@ -67,13 +67,13 @@ li a:hover, .dropHover:hover a{
     width: 80%;
     margin: auto;
     color: rgb(200, 200, 200);
-    font-size: 32px;
+    font-size: 20px;
 }
 
 .reflection{
     width: 90%;
     margin: auto;
-    font-size: 24px;
+    font-size: 18px;
     color: rgb(20,20,20);
     border-radius: 40px 10px;
     background-color: rgb(245, 245, 245);
@@ -88,7 +88,7 @@ footer{
 
 footer a{
     text-decoration: none;
-    font-size: 24px;
+    font-size: 18px;
     color: rgb(245, 245, 245);
 }
 
@@ -119,8 +119,8 @@ footer a{
 
 .stolenComic{
     background-image: url("http://www.dreadcentral.com/wp-content/uploads/2017/09/thesandman-syfy.jpg");
-    width:  100%;
-    padding-top: 40%;
+    width:  80%;
+    padding-top: 25%;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
