@@ -1,11 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Playfair+Display|Righteous|Cinzel+Decorative:900|Denk+One|Merriweather+Sans:700i|Vast+Shadow&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Cinzel|Dancing+Script|Mystery+Quest|Playfair+Display|Righteous|Cinzel+Decorative:900|Denk+One|Merriweather+Sans:700i|Vast+Shadow&display=swap');
 /*font-family: 'Vast Shadow', cursive;
 font-family: 'Denk One', sans-serif;
 font-family: 'Cinzel Decorative', cursive;
 font-family: 'Merriweather Sans', sans-serif;
 font-family: 'Playfair Display', serif;
 font-family: 'Righteous', cursive;
-font-family: 'Dancing Script', cursive;*/
+font-family: 'Dancing Script', cursive;
+font-family: 'Mystery Quest', cursive;
+font-family: 'Cinzel', serif;*/
 
 /*General Formatting*/
 
@@ -239,7 +241,7 @@ table{
 .mystHeader{
     background-image: linear-gradient( rgba(0, 51, 102, 0.99), rgba(160, 215, 250, 0.99));
     color: rgb(250, 245, 240);
-    font-family: 'Denk One', sans-serif;
+    font-family: 'Mystery Quest', cursive;
     font-size: 48px;
     text-align: center;
     width: 100%;
@@ -364,18 +366,52 @@ table{
 
 .nihHeader{
     background-image: linear-gradient( rgba(180, 60, 10, 0.99), rgba(190, 190, 200, 0.99));
+    overflow: hidden;
+    background-size: 100% 100%;
     color: rgb(250, 245, 240);
-    font-family: 'Denk One', sans-serif;
+    font-family: 'Cinzel', serif;
     font-size: 48px;
     text-align: left;
     width: 100%;
 }
 
+.nihStory{
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    color: rgb(200, 200, 200);
+    font-size: 20px;
+}
+
+.nihStory > div {
+    width: 31.25%;
+}
+
+
 .meteorImg{
     background-image: url("https://www.glenbow.org/images/img-col-mus-min-oth-hig-4.jpg");
-    width:  31.3%;
     padding-top: 24%;
     border-radius: 20px;
-    background-size: none;
     background-position: left;
+}
+
+.nih1 {
+    -webkit-animation-name: nihTitle;
+    -webkit-animation-duration: 5.0s;
+    -webkit-animation-iteration-count: infinite;
+    animation-name: sandTitle;
+    animation-timing-function: linear;
+    animation-duration: 5.0s;
+    animation-delay: 0.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes nihTitle {
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:0 100%
+    }
 }
