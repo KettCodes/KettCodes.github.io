@@ -359,3 +359,23 @@ table{
         background-color: rgba(0, 51, 102, 0.01);
     }
 }
+
+/*NIHeart Formatting*/
+
+.nihHeader{
+    background-image: linear-gradient( rgba(180, 60, 10, 0.99), rgba(190, 190, 200, 0.99));
+    color: rgb(250, 245, 240);
+    font-family: 'Denk One', sans-serif;
+    font-size: 48px;
+    text-align: left;
+    width: 100%;
+}
+
+.meteorImg{
+    background-image: url("https://www.glenbow.org/images/img-col-mus-min-oth-hig-4.jpg");
+    width:  31.3%;
+    padding-top: 24%;
+    border-radius: 20px;
+    background-size: none;
+    background-position: left;
+}
