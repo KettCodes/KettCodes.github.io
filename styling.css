@@ -65,6 +65,15 @@ li a:hover, .dropHover:hover a{
     background-color: rgb(200, 200, 200);
 }
 
+header{
+    background-image: linear-gradient( rgba(100, 100, 250, 0.95), rgba(245, 245, 245, 0.5));
+    color: rgb(245, 245, 245);
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 48px;
+    text-align: center;
+    width: 100%;
+}
+
 .story{
     width: 80%;
     margin: auto;
@@ -99,6 +108,38 @@ footer a{
 table{
     width: 100%;
     table-layout: fixed;
+}
+
+/*Home Formatting*/
+.flexContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    background-color: rgba(200, 200, 200, 0.05);
+    font-size: 20px;
+}
+
+.flexContainer > div {
+    position: relative;
+    background-color: rgb(250, 250, 250);
+    color: rgb(20, 20, 20);
+    border-radius: 20px;
+    width: 40%;
+    margin: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.me{
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+
+.me img {
+    min-width: 100%;
+    min-height: 100%
 }
 
 /*Sand Formatting*/
@@ -387,7 +428,6 @@ table{
 .nihStory > div {
     width: 31.25%;
 }
-
 
 .meteorImg{
     background-image: url("https://www.glenbow.org/images/img-col-mus-min-oth-hig-4.jpg");
