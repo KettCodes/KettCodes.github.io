@@ -147,7 +147,7 @@ table{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
+    width: 90%;
     margin: auto;
     border-radius: 20px;
     background-color: rgba(200, 200, 222, 0.5);
@@ -156,15 +156,16 @@ table{
 
 .calcContainer > div {
     position: relative;
-    width: 60%;
+    width: 80%;
+    height: 90%;
     margin: auto;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
 .displayLast{
-    height: 28px;
-    font-size: 24px;
+    height: 36px;
+    font-size: 32px;
     text-align: left;
     padding-left: 20px;
     background-color: rgba(0,15,0,1);
@@ -172,8 +173,8 @@ table{
 }
 
 .displayCurrent{
-    height: 48px;
-    font-size: 44px;
+    height: 52px;
+    font-size: 48px;
     text-align: right;
     padding-right: 20px;
     background-color: rgba(0,15,0,1);
@@ -185,7 +186,7 @@ table{
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    width: 95%;
+    width: 90%;
     margin: auto;
     font-size: 20px;
 }
@@ -193,6 +194,8 @@ table{
 .calcPadContainer > button {
     position: relative;
     color: rgb(20, 20, 20);
+    font-family: 'Vast Shadow', cursive;
+    font-size: 32px;
     width: 23%;
     margin: auto;
     padding-top: 5px;
