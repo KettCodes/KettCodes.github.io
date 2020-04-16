@@ -21,62 +21,13 @@
 var margin = {top: 10, right: 30, bottom: 30, left: 40},
     width = 1000 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
-/*
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-// read data
-//d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_for_density2d.csv", function(data) {
-d3.csv("NHL_fullset.csv", function(data) {
-
-  // Add X axis
-  var x = d3.scaleLinear()
-    .domain([-100, 100])
-    .range([ margin.left, width - margin.right ]);
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-
-  // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([-40, 40])
-    .range([ height - margin.bottom, margin.top ]);
-  svg.append("g")
-    .call(d3.axisLeft(y));
-
-  // Prepare a color palette
-  var color = d3.scaleLinear()
-      .domain([0, 1]) // Points per square pixel.
-      .range(["white", "#69b3a2"]);
-
-  // compute the density data
-  var densityData = d3.contourDensity()
-    .x(function(d) { return x(d.x); })
-    .y(function(d) { return y(d.y); })
-    .size([width, height])
-    .bandwidth(20)
-    (data);
-
-  // show the shape!
-  svg.insert("g", "g")
-    .selectAll("path")
-    .data(densityData)
-    .enter().append("path")
-      .attr("d", d3.geoPath())
-      .attr("fill", function(d) { return color(d.value); })
-})*/
 
 var svg = d3.select("#my_dataviz")
     .append("svg")
     .style("background-image", "url('hockey-rink-scaled.png')")
     .style("background-repeat", "no-repeat")
-    .style("background-size", "cover")
+    .style("background-size", "93.2% 91%")
+    .style("background-position", "39px 8px") //should play with % here for scaling reasons
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -101,24 +52,24 @@ d3.csv("NHL_fullset.csv", function(data) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Reformat the data: d3.hexbin() needs a specific format
-    var goalsInHexbin = [];
+    //this creates the filtered list with the top name being the right side and bottom filter for the left
     var shotsInHexbin = [];
     data.forEach(function(d) {
         //console.log(d);
-        if (d.goal==="1")
-            goalsInHexbin.push( [x(d.x), y(d.y), d.goal] );
-        shotsInHexbin.push( [x(d.x), y(d.y), d.goal] );
+        if (d.lastName==="Rask" && d.x>4)
+            shotsInHexbin.push( [x(d.x), y(d.y), d.goal] );
+        if (d.lastName!=="Rask" && d.x>4)
+            shotsInHexbin.push( [x(-1*d.x), y(-1*d.y), d.goal] );
     });
 
     // Prepare a color palette
     var color = d3.scaleLinear()
-        .domain([0, 1]) // Number of points in the bin?
-        .range(["transparent",  "#69b3a2"]);
+        .domain([0, 0.4, 1]) // I use this instead of log scaling but we should try that
+        .range(["#f5793a", "#f5793a",  "#0f2080"]);
 
     // Compute the hexbin data
     var hexbin = d3.hexbin()
-        .radius(3) // size of the bin in px
+        .radius(16) // THE 3 BINS SIZES THAT WORK ARE 10, 16, AND 20
         .extent([ [0, 0], [width, height] ]);
 
     // Plot the hexbins
@@ -134,12 +85,13 @@ d3.csv("NHL_fullset.csv", function(data) {
         .data( hexbin(shotsInHexbin) )
         .enter().append("path")
         .attr("d", hexbin.hexagon())
+        .attr("fill-opacity", 0.85)
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
         .attr("fill", function(d) { if (d.length<1) {return color(d.length);}
                         console.log(d.x + " " + d.y + " " + d.length);
                         let count = 0;
                         for(let i=0; i<d.length; i++) {
-                            if (d[i][2] === "1") {count++;}
+                            if (d[i][2] === "0") {count++;}
                         }
                         console.log(count);
                         return color(count/d.length);

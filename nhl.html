@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        width: 2000px;
+        margin: 1em 1em;
+        padding: 1em;
+        color: white;
+        background-color: black;
+    }
+
+    body,
+    button {
+        font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
+    }
+
+    body,
+    text {
+        font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
+    }
+
+    button {
+        color: white;
+        font-size: 15px;
+        background-color: #343434;
+        border-radius: 3px;
+        border: solid 3px #343434;
+        padding: 10px 16px;
+        margin-right: 10px;
+    }
+
+    text {
+        font-size: 15px;
+        padding: 10px 16px;
+        margin-right: 10px;
+    }
+
+    svg {
+        font: 10px sans-serif;
+        alignment: center;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: white;
+        shape-rendering: crispEdges;
+    }
+
+    .axis text {
+        fill: white;
+    }
+
+    .switch {
+        width: 40px;
+        height: 20px;
+        border-radius: 30px;
+        overflow: hidden;
+        vertical-align: middle;
+        position: relative;
+        display: inline-block;
+        background: #ccc;
+        box-shadow: 0 0 1px #36a6d4;
+    }
+
+    .switch input {
+        visibility: hidden;
+    }
+
+    .switch span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        background: #fff;
+        width: 50%;
+        height: 100%;
+        transition: all linear 0.2s;
+    }
+
+    .switch span::before {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        content: '';
+        width: 200%;
+        height: 100%;
+        border-radius: 30px;
+        background: #36a6d4;
+    }
+
+    .switch span::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .switch input:checked + span {
+        transform: translateX(100%);
+    }
+</style>
+
+<body>
+<h1>CPSC 583 Final Project: NHL Visualization</h1>
+
+<input type="radio" id="radio_id" name="Goalie" checked="checked">
+<text>Goalie ID</text>
+
+<input type="radio" id="radio_name" name="Goalie">
+<text>Goalie Name</text>
+
+<!--<input type="checkbox" name="my-checkbox" style="width=100; height=100" checked>-->
+
+<label class='switch'>
+    <input type='checkbox' id="goals">
+    <span></span>
+</label>
+<text>Only Goals</text>
+
+<input id="goalie_id" type="text" value="Please enter goalieID"
+       style="color: white;
+        font-size: 15px;
+        background-color: #343434;
+        border-radius: 3px;
+        border: solid 3px #343434;
+        padding: 10px 16px;
+        margin-right: 10px;"/>
+
+<button id="goalie_filter" type="button">Filter Goalie</button>
+<button id="goalie_select" type="button">Select Goalie</button>
+<button id="compare" type="button">Compare</button>
+<button id="reset" type="button">Reset</button>
+
+<script src="d3.js"></script>
+<script>
+    // let d3 = import(d3.js);
+    /**
+     * copied from the following resources:
+     * http://bl.ocks.org/micahstubbs/281d7b7a7e39a9b59cf80f1b8bd41a72
+     * http://bl.ocks.org/msbarry/9911363
+     * http://bl.ocks.org/weiglemc/6185069
+     *
+     **/
+
+    const width = 2000;
+    const height = 800;
+
+    const color = d3.scaleThreshold()
+        .domain([2, 3, 4, 5, 6, 7, 8])
+        .range(d3.schemeReds[7])
+        .unknown(d3.rgb(255, 200, 200));
+
+    const svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height + 200);
+
+    const scatterplot = svg
+        .append('g')
+        .attr('class', 'scatterplot')
+        .attr("transform", "translate(150,150)");
+
+    let tooltip = d3.select('body')
+        .append('div')
+        .style('position', 'absolute')
+        .style('z-index', '10')
+        .style('background-color', '#343434')
+        .style('visibility', 'hidden')
+        .style('font-size', '16px')
+        .style('font-weight', 'bold')
+        .style('text-aligh', 'center')
+        .style('border-style', 'solid')
+        .style('border-width', '2px')
+        .style('border-radius', '5px')
+        .style('font-family', '"Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif')
+        .style('border', 'solid 8px #343434')
+        .style('word-spacing', '5px')
+        .text('');
+
+
+    let goalie_1 = scatterplot.append("text")
+        .attr("x", 450)
+        .attr("y", -50)
+        .attr("dy", ".35em")
+        .style('font-size', "30px")
+        .style("text-anchor", "end")
+        .style('fill', "white")
+        .text("");
+
+    let goalie_2 = scatterplot.append("text")
+        .attr("x", 1280)
+        .attr("y", -50)
+        .attr("dy", ".35em")
+        .style('font-size', "30px")
+        .style("text-anchor", "end")
+        .style('fill', "white")
+        .text("");
+
+
+    function getGolieColor(userName) {
+        const COLORS = [
+            '#e21400', '#91580f', '#f8a700', '#f78b00',
+            '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+            '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+        ];
+
+        const CLORS_BLIND_FRIENDLY = [
+            '#2e6a84', '#6e3f47', '#016989', '#3da6d1',
+            '#65c8f4', '#9c2340', '#518aa6', '#f17f93',
+            '#32329a', '#8f8ff3', '#efef8f', '#c4c4d9'];
+
+        // Compute hash code
+        let hash = 7;
+        for (let i = 0; i < userName.length; i++) {
+            hash = userName.charCodeAt(i) + (hash << 5) - hash;
+        }
+        // Calculate color
+        const index = Math.abs(hash % CLORS_BLIND_FRIENDLY.length);
+        return CLORS_BLIND_FRIENDLY[index];
+    }
+
+    // All the shared variables
+    let nhl;
+    let fieldColor = "goalie";
+    let fieldXAxis = "x";
+    let fieldYAxis = "y";
+
+    // setup x
+    var xValue = function (d) {
+            return d[fieldXAxis];
+        }, // data -> value
+        xScale = d3.scaleLinear().range([0, 1600]), // value -> display
+        xMap = function (d) {
+            return xScale(xValue(d));
+        }, // data -> display
+        xAxis = d3.axisBottom().scale(xScale);
+
+    // setup y
+    var yValue = function (d) {
+            return d[fieldYAxis];
+        }, // data -> value
+        yScale = d3.scaleLinear().range([640, 0]), // value -> display
+        yMap = function (d) {
+            return yScale(yValue(d));
+        }, // data -> display
+        yAxis = d3.axisLeft().scale(yScale);
+
+    // don't want dots overlapping axis, so add in buffer to data domain
+    xScale.domain([-100, 100]);
+    yScale.domain([-43, 43]);
+
+    Promise.all([
+        d3.csv('NHL_fullset.csv')
+    ]).then(function (data) {
+
+        nhl = data[0];
+        currentdata = nhl;
+
+        // x-axis-top
+        scatterplot.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + (height - 160) + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("x", xScale(100))
+            .attr("y", 0)
+            .style("text-anchor", "end");
+
+        // x-axis-bottom
+        scatterplot.append("g")
+            .attr("class", "x axis")
+            .call(xAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("x", xScale(100))
+            .attr("y", 0)
+            .style("text-anchor", "end");
+
+
+        // y-axis-left
+        scatterplot.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", 0)
+            .attr("y", yScale(40))
+            .attr("dy", "1.5em")
+            .style("text-anchor", "end");
+
+        // y-axis-right
+        scatterplot.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(" + (width - 400) + ",0)")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("x", 0)
+            .attr("y", yScale(40))
+            .attr("dy", "1.5em")
+            .style("text-anchor", "end");
+
+        // draw dots
+        scatterplot.selectAll(".dot")
+            .data(nhl)
+            .enter().append("circle")
+            .attr("class", d => {
+                return "dot goalie-" + d.goalie;
+            })
+            .attr("r", 3.5)
+            .attr("cx", xMap)
+            .attr("cy", yMap)
+            .style("fill", function (d) {
+                return getGolieColor(d[fieldColor]);
+            })
+            .on("mouseover", function (d) {
+                if (selected.indexOf(d.goalie) === -1) {
+                    d3.select(this)
+                        .attr('r', '10')
+                        .style('opacity', 1);
+                }
+                return tooltip
+                    .style("left", (d3.event.pageX + 20) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style('visibility', 'visible')
+                    .text(`${d.goalie} ${d.firstName} ${d.lastName}`);
+
+            })
+            .on("click", function (d) {
+                let goalie_id = document.getElementById('goalie_id');
+                if (filter_mode === 0) {
+                    goalie_id.value = d.goalie;
+                } else {
+                    goalie_id.value = d.firstName + ' ' + d.lastName;
+                }
+
+            })
+            .on("mouseout", function (d) {
+                if (selected.indexOf(d.goalie) === -1) {
+                    d3.select(this)
+                        .attr('r', '3.5')
+                        .style('opacity', d => {
+                            if (selected.length !== 0) {
+                                return 0.1;
+                            } else {
+                                return 1;
+                            }
+                        });
+                }
+                tooltip.style('visibility', 'hidden');
+
+            });
+
+
+    });
+
+    let goalie_filter = document.getElementById('goalie_filter');
+    let goalie_id = document.getElementById('goalie_id');
+    let goalie_select = document.getElementById('goalie_select');
+    let compare = document.getElementById('compare');
+    let reset = document.getElementById('reset');
+    let goals = document.getElementById('goals');
+    let radio_id = document.getElementById('radio_id');
+    let radio_name = document.getElementById('radio_name');
+    let selected = [];
+    let currentdata = [];
+    let checked = false;
+    let compare_mode = false;
+    let goalieID = 0;
+    let filter_mode = 0;
+    let goalie_name = '';
+    let selected_name = [];
+
+    async function getGoalieID(goalieFName, goalieLName) {
+        let rtn = false;
+        goalieID = 0;
+        await nhl.forEach(d => {
+            if (d.firstName === goalieFName && d.lastName === goalieLName) {
+                goalieID = d.goalie;
+                goalie_name = d.firstName + ' ' + d.lastName;
+                rtn = true;
+            }
+        });
+        return rtn;
+    }
+
+    radio_id.onclick = function () {
+        filter_mode = 0;
+        goalie_id.value = "Please enter goalieID";
+    };
+
+    radio_name.onclick = function () {
+        filter_mode = 1;
+        goalie_id.value = "Please enter goalieName";
+    };
+
+    goals.onclick = function (d) {
+        checked = d.toElement.checked;
+
+        if (checked === true) {
+            scatterplot.selectAll(".dot")
+                .data(currentdata)
+                .attr("r", d => {
+                    if (d.goal === "1") {
+                        if (selected.indexOf(d.goalie) !== -1) {
+                            return 10;
+                        } else {
+                            return 3.5;
+                        }
+                    } else {
+                        return 0;
+                    }
+                });
+
+        } else {
+            scatterplot.selectAll(".dot")
+                .data(currentdata)
+                .attr("r", d => {
+                    if (selected.indexOf(d.goalie) !== -1) {
+                        return 10;
+                    } else {
+                        return 3.5;
+                    }
+                });
+        }
+
+    };
+
+    // scatterplot.selectAll("text")
+    //     .data(nhl)
+    //     .enter()
+    //     .append("text")
+    //     .text(function(d) {
+    //         return d[fieldID]
+    //     })
+    //     .attr("x", xMap)
+    //     .attr("y", yMap)
+    //     .attr("font-family", "sans-serif")
+    //     .attr("font-size", "11px")
+    //     .style("fill", function(d) { return getGolieColor(d[fieldGoalie]);});
+
+
+    goalie_filter.onclick = function () {
+
+        if (filter_mode === 0) {
+            goalieID = goalie_id.value;
+        } else {
+            let fullname = goalie_id.value.split(' ');
+            getGoalieID(fullname[0], fullname[1]).then(bool => {
+                if (bool === false) {
+                    alert("This goalie does not exist");
+                    return;
+                }
+            });
+        }
+
+        let filtered = [];
+
+        nhl.forEach(d => {
+            if (d.goalie === goalieID) {
+                filtered.push(d);
+            }
+        });
+
+        //console.log(filtered);
+        currentdata = filtered;
+
+        d3.selectAll("circle").remove();
+
+        scatterplot.selectAll(".dot")
+            .data(filtered)
+            .enter().append("circle")
+            .attr("class", d => {
+                return "dot goalie-" + d.goalie;
+            })
+            .transition()
+            .duration(2000)
+            .attr("r", 3.5)
+            .attr("cx", xMap)
+            .attr("cy", yMap)
+            .style("fill", function (d) {
+                return getGolieColor(d[fieldColor]);
+            });
+
+
+        scatterplot.selectAll(".dot")
+            .on("mouseover", (d, i) => {
+                let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                d3.select(circle).attr('r', 10);
+                return tooltip
+                    .style("left", (d3.event.pageX + 20) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style('visibility', 'visible')
+                    .text(`(${d.x},${d.y})`);
+            })
+            .on("mouseout", (d, i) => {
+                let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                d3.select(circle).attr('r', 3.5);
+                tooltip.style('visibility', 'hidden');
+            });
+
+
+    };
+
+    goalie_select.onclick = function () {
+
+        if (filter_mode === 0) {
+            goalieID = goalie_id.value;
+        } else {
+            let fullname = goalie_id.value.split(' ');
+            getGoalieID(fullname[0], fullname[1]).then(bool => {
+                if (bool === false) {
+                    alert("This goalie does not exist");
+                    return;
+                }
+            });
+
+
+        }
+
+        if (compare_mode === true) {
+            alert("Compare mode does not support selection");
+            return;
+        }
+
+        selected.push(goalieID);
+        selected_name.push(goalie_name);
+
+        if (selected.length > 2) {
+            alert("You can only compare the first two selections!");
+        }
+
+        if (filter_mode === 0) {
+            if (selected.length === 1) {
+                goalie_1
+                    .text(selected[0])
+                    .style("fill", function (d) {
+                        return getGolieColor(selected[0]);
+                    });
+            } else if (selected.length === 2) {
+                goalie_2
+                    .text(selected[1])
+                    .style("fill", function (d) {
+                        return getGolieColor(selected[1]);
+                    });
+            }
+        } else {
+            if (selected.length === 1) {
+                goalie_1
+                    .text(selected_name[0])
+                    .style("fill", function (d) {
+                        return getGolieColor(selected[0]);
+                    });
+            } else if (selected.length === 2) {
+                goalie_2
+                    .text(selected_name[1])
+                    .style("fill", function (d) {
+                        return getGolieColor(selected[1]);
+                    });
+            }
+        }
+
+
+        scatterplot.selectAll(".dot")
+            .data(nhl)
+            .style('opacity', d => {
+                if (selected.indexOf(d.goalie) !== -1) {
+                    return 0.9;
+                } else {
+                    return 0.1;
+                }
+            })
+            .attr('r', d => {
+                if (checked === true) {
+                    if (d.goal === "1") {
+                        if (selected.indexOf(d.goalie) !== -1) {
+                            return 10;
+                        } else {
+                            return 3.5;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (selected.indexOf(d.goalie) !== -1) {
+                        return 10;
+                    } else {
+                        return 3.5;
+                    }
+                }
+
+            });
+
+    };
+
+    compare.onclick = function () {
+        if (selected.length >= 2) {
+
+            let filtered = [];
+
+            nhl.forEach(d => {
+                if (d.goalie === selected[0]) {
+                    d.x = -1 * d.x;
+                    filtered.push(d);
+                } else if (d.goalie === selected[1]) {
+                    filtered.push(d);
+                }
+            });
+
+            //console.log(filtered);
+
+            currentdata = filtered;
+
+            selected = [];
+
+            compare_mode = true;
+
+            d3.selectAll("circle").remove();
+
+            scatterplot.selectAll(".dot")
+                .data(filtered)
+                .enter().append("circle")
+                .attr("class", d => {
+                    return "dot goalie-" + d.goalie;
+                })
+                .transition()
+                .duration(2000)
+                .attr("r", 3.5)
+                .attr("cx", xMap)
+                .attr("cy", yMap)
+                // .style('opacity', 0.8)
+                .style("fill", function (d) {
+                    return getGolieColor(d[fieldColor]);
+                });
+
+
+            scatterplot.selectAll(".dot")
+                .on("mouseover", (d, i) => {
+                    let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                    d3.select(circle).attr('r', 10);
+                    return tooltip
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY + 20) + "px")
+                        .style('visibility', 'visible')
+                        .text(`(${d.x},${d.y})`);
+                })
+                .on("mouseout", (d, i) => {
+                    let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                    d3.select(circle).attr('r', 3.5);
+                    tooltip.style('visibility', 'hidden');
+                });
+
+
+        } else {
+            alert("Please select at least two goalies!");
+        }
+    };
+
+    reset.onclick = function () {
+        selected = [];
+        selected_name = [];
+        currentdata = nhl;
+        goalie_1.text('');
+        goalie_2.text('');
+        compare_mode = false;
+        d3.selectAll("circle").remove();
+
+        // draw dots
+        scatterplot.selectAll(".dot")
+            .data(nhl)
+            .enter().append("circle")
+            .attr("class", d => {
+                return "dot goalie-" + d.goalie;
+            })
+            .attr("r", 3.5)
+            .attr("cx", xMap)
+            .attr("cy", yMap)
+            .style("fill", function (d) {
+                return getGolieColor(d[fieldColor]);
+            })
+            .on("mouseover", function (d, i) {
+                if (selected.indexOf(d.goalie) === -1) {
+                    let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                    d3.select(circle)
+                        .attr('r', '10')
+                        .style('opacity', 1);
+                }
+                return tooltip
+                    .style("left", (d3.event.pageX + 20) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style('visibility', 'visible')
+                    .text(`${d.goalie} ${d.firstName} ${d.lastName}`);
+
+            })
+            .on("click", function (d) {
+                let goalie_id = document.getElementById('goalie_id');
+                if (filter_mode === 0) {
+                    goalie_id.value = d.goalie;
+                } else {
+                    goalie_id.value = d.firstName + ' ' + d.lastName;
+                }
+
+
+            })
+            .on("mouseout", function (d, i) {
+                if (selected.indexOf(d.goalie) === -1) {
+                    let circle = scatterplot.selectAll(".dot")._groups[0][i];
+                    d3.select(circle)
+                        .attr('r', '3.5')
+                        .style('opacity', d => {
+                            if (selected.length !== 0) {
+                                return 0.1;
+                            } else {
+                                return 1;
+                            }
+                        });
+                }
+                tooltip.style('visibility', 'hidden');
+
+            });
+
+    }
+
+</script>
+</body>
+</html>
