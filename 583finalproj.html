@@ -30,6 +30,23 @@
     let shotsInHexbin = [];
     let heatScatter = true;
 
+    let tooltip = d3.select('body')
+        .append('div')
+        .style('position', 'absolute')
+        .style('z-index', '10')
+        .style('background-color', 'white')
+        .style('visibility', 'hidden')
+        .style('font-size', '16px')
+        .style('font-weight', 'bold')
+        .style('text-aligh', 'center')
+        .style('border-style', 'solid')
+        .style('border-width', '2px')
+        .style('border-radius', '5px')
+        .style('font-family', '"Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif')
+        .style('border', 'solid 8px white')
+        .style('word-spacing', '5px')
+        .text('');
+
     d3.csv("NHL_fullset.csv", function (data) {
 
         // Prepare a color palette for each bin
@@ -46,8 +63,10 @@
         d3.select('#heat_map')
             .on('click', changeToScatter);
 
-        function changeToScatter(){
-            if (heatScatter){ return;}
+        function changeToScatter() {
+            if (heatScatter) {
+                return;
+            }
             heatScatter = true;
             svg.selectAll("path").remove();
 
@@ -103,7 +122,7 @@
         d3.select('#scatter')
             .on('click', changeToHexMap);
 
-        function changeToHexMap(){
+        function changeToHexMap() {
             if (heatScatter) {
                 heatScatter = false;
                 d3.selectAll("circle").remove();
@@ -138,9 +157,21 @@
                         return color(count / d.length);
                     })
                     .attr("stroke", "black")
-                    .attr("stroke-width", "0");
+                    .attr("stroke-width", "0").on("mouseover", (d, i) => {
+                    let goal = 0;
+                    d.forEach(e => {
+                        if (e[2] === "1") {
+                            goal++;
+                        }
+                    });
+                    return tooltip
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY + 20) + "px")
+                        .style('visibility', 'visible')
+                        .text(`Count: ${d.length} Goals: ${goal} Saves: ${d.length - goal}`);
+                });
 
-        }
+            }
         }
 
 
@@ -299,7 +330,19 @@
                         return color(count / d.length);
                     })
                     .attr("stroke", "black")
-                    .attr("stroke-width", "0");
+                    .attr("stroke-width", "0").on("mouseover", (d, i) => {
+                    let goal = 0;
+                    d.forEach(e => {
+                        if (e[2] === "1") {
+                            goal++;
+                        }
+                    });
+                    return tooltip
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY + 20) + "px")
+                        .style('visibility', 'visible')
+                        .text(`Count: ${d.length} Goals: ${goal} Saves: ${d.length - goal}`);
+                });
             }
 
         };
@@ -436,7 +479,20 @@
                         return color(count / d.length);
                     })
                     .attr("stroke", "black")
-                    .attr("stroke-width", "0");
+                    .attr("stroke-width", "0")
+                    .on("mouseover", (d, i) => {
+                        let goal = 0;
+                        d.forEach(e => {
+                            if (e[2] === "1") {
+                                goal++;
+                            }
+                        });
+                        return tooltip
+                            .style("left", (d3.event.pageX + 20) + "px")
+                            .style("top", (d3.event.pageY + 20) + "px")
+                            .style('visibility', 'visible')
+                            .text(`Count: ${d.length} Goals: ${goal} Saves: ${d.length - goal}`);
+                    });
             }
         };
 
@@ -593,7 +649,20 @@
                     return color(count / d.length);
                 })
                 .attr("stroke", "black")
-                .attr("stroke-width", "0");
+                .attr("stroke-width", "0")
+                .on("mouseover", (d, i) => {
+                    let goal = 0;
+                    d.forEach(e => {
+                        if (e[2] === "1") {
+                            goal++;
+                        }
+                    });
+                    return tooltip
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY + 20) + "px")
+                        .style('visibility', 'visible')
+                        .text(`Count: ${d.length} Goals: ${goal} Saves: ${d.length - goal}`);
+                });
         }
     });
 
