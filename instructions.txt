@@ -1,9 +1,0 @@
-
-Andrew Kett - 10004015 - Tutorial 2
-
-website located at: https://kettcodes.github.io/calculator.html
-
-tested on pc chrome, and firefox
-tested on android with chrome and samsung internet
-
-click the buttons to use the calculator
